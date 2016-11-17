@@ -63,12 +63,12 @@ ul.nodot{
           </div>
           <div id="navigation" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="index.html">Home</a></li>
+              <li class="active"><a href="index.php">Home</a></li>
               <li><a href="#about">About Us</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="plots.html">Plots</a></li>
-              <li><a href="form.html">Form</a></li>
+              <li><a href="plots.php">Plots</a></li>
+              <li><a href="form.php">Form</a></li>
             </ul>
           </div>
         </div>
@@ -200,7 +200,7 @@ services are</p>
   <section id="container" class="section-gray">
     <div id="pets" class="row">
       <div class="col-md-12">
-          <h1>List of adopted pets</h1>
+          <h1>DISPLAYING THE QUERY RESULTS:</h1>
       </div>
     </div>
     <div class="row">
@@ -209,49 +209,55 @@ services are</p>
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Types</th>
-                <th>Number of Adoption</th>
-                <th>Male</th>
-                <th>Female</th>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th>Country</th>
+                <th>Referral</th>
+                <th>Favorite Pet</th>
+                <th>About You</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Dogs</td>
-                <td>13</td>
-                <td>5</td>
-                <td>8</td>
-              </tr>
-              <tr>
-                <td>Cats</td>
-                <td>11</td>
-                <td>9</td>
-                <td>2</td>
-              </tr>
-              <tr>
-                <td>Rabbits</td>
-                <td>7</td>
-                <td>4</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>Guinea Pig</td>
-                <td>5</td>
-                <td>1</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>Turtle</td>
-                <td>2</td>
-                <td>0</td>
-                <td>2</td>
-                </tr>
-                <tr>
-                  <td>Birds</td>
-                  <td>6</td>
-                  <td>2</td>
-                  <td>4</td>
-                  </tr>
+
+                <?php
+                $db = new mysqli('localhost', 'root', '', 'lab');
+                if($db->connect_errno > 0){
+                    echo "ERROR";
+                    die('Unable to connect to database [' . $db->connect_error . ']');
+                }
+                else {
+                    echo "SUCCESS" . '<br />';
+                }
+                $result = $db->query("SELECT * FROM sample");
+                if (!$result) {
+                    die('There was an error running the query[' . $db->error . ']');
+                }
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>";
+                    echo $row['name'];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row['email'];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row['dropdown'];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row['checkbox'] . ', ';
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row['radio'];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row['textarea'];
+                    echo "</td>";
+                    echo "</tr>";
+                  }
+                    $result->free();
+                    $db->close();
+                    ?>
+
             </tbody>
           </table>
         </div>

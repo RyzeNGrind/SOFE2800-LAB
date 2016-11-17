@@ -1,3 +1,59 @@
+<?php
+$db = new mysqli('localhost', 'root', '', 'lab');
+
+// TODO You must process the POST data from the form and then set the variables
+// below to be inserted in the database
+
+// You should see sucess if you can connect
+if($db->connect_errno > 0){
+    echo "ERROR";
+    die('Unable to connect to database [' . $db->connect_error . ']');
+}
+else {
+    echo "SUCCESS";
+}
+
+// Insert sample data into the database
+$sql = $db->prepare("INSERT INTO sample(name, email, password, dropdown, checkbox, " .
+                    "radio, textarea) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+//if($_POST['btnSubmit'] == "Submit")
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+
+
+// These should be retrieved from POST variables
+$name = $_POST['name'];
+$email = $_POST['email'];
+$insecure_pass = $_POST['password']; // This password needs to be securely hashed
+$dropdown = $_POST['country']; // This is one of the dropdown selection options
+$checkbox = implode(",", $_POST['referral']);  // This is a boolean value 0 or 1
+$radio = $_POST['favpet'];   // This is an integer value
+$message = $_POST['aboutyou'];
+
+/**$name = "Shawn";
+$email = "shawn@test.com";
+$insecure_pass = "shawn123"; // This password needs to be securely hashed
+$dropdown = "Option 2"; // This is one of the dropdown selection options
+$checkbox = 1;  // This is a boolean value 0 or 1
+$radio = 3;   // This is an integer value
+$message = "YOLO.";**/
+
+// Securely hash the password
+$password = password_hash($insecure_pass, PASSWORD_DEFAULT);
+}
+// Bind the parameters to the SQL query above, s is a string i is an integer
+$sql->bind_param("sssssss", $name, $email, $password, $dropdown, $checkbox, $radio, $message);
+
+// Execute the query, inserting the data
+$sql->execute();
+
+// Close the connection
+$sql->close();
+$db->close();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,12 +123,12 @@ ul.nodot{
           </div>
           <div id="navigation" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="index.html">Home</a></li>
+              <li class="active"><a href="index.php">Home</a></li>
               <li><a href="#about">About Us</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="plots.html">Plots</a></li>
-              <li><a href="form.html">Form</a></li>
+              <li><a href="plots.php">Plots</a></li>
+              <li><a href="form.php">Form</a></li>
             </ul>
           </div>
         </div>
@@ -80,7 +136,7 @@ ul.nodot{
     </div>
   </header>
   <body>
-    <form id="form" class="form-horizontal">
+    <form id="form" class="form-horizontal" action="form.php" method="POST">
       <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-8">
@@ -117,15 +173,15 @@ ul.nodot{
         <div class="col-sm-8">
           <div class="checkbox">
             <label>
-              <input type="checkbox" name="referral[]" value="socialmedia">
+              <input type="checkbox" name="referral[]" value="Social Media">
               Social media
             </label>
             <label>
-              <input type="checkbox"name="referral[]" value="newspaper">
+              <input type="checkbox"name="referral[]" value="Newspaper">
               Newspaper
             </label>
             <label>
-              <input type="checkbox" name="referral[]" value="friend">
+              <input type="checkbox" name="referral[]" value="Friend">
               Person referred me
             </label>
           </div>
@@ -136,15 +192,15 @@ ul.nodot{
         <div class="col-sm-8">
           <div class="radio">
             <label>
-              <input type="radio" name="favpet" id="favpet1" value="dog">
+              <input type="radio" name="favpet" id="favpet1" value="Dog">
               Dogs
             </label>
             <label>
-              <input type="radio" name="favpet" id="favpet2" value="cat" >
+              <input type="radio" name="favpet" id="favpet2" value="Cat" >
               Cats
             </label>
             <label>
-              <input type="radio" name="favpet" id="favpet3" value="other" >
+              <input type="radio" name="favpet" id="favpet3" value="Other" >
               Other
             </label>
           </div>
@@ -158,7 +214,7 @@ ul.nodot{
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button type="submit" id="btnSubmit" name="btnSubmit" class="btn btn-default" value="Submit">Submit</button>
         </div>
       </div>
     </form>
