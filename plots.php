@@ -64,12 +64,12 @@ ul.nodot{
           </div>
           <div id="navigation" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li class="active"><a href="index.html">Home</a></li>
+              <li class="active"><a href="index.php">Home</a></li>
               <li><a href="#about">About Us</a></li>
               <li><a href="#services">Services</a></li>
               <li><a href="#portfolio">Portfolio</a></li>
-              <li><a href="plots.html">Plots</a></li>
-              <li><a href="form.html">Form</a></li>
+              <li><a href="plots.php">Plots</a></li>
+              <li><a href="form.php">Form</a></li>
             </ul>
           </div>
         </div>
