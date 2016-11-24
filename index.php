@@ -220,7 +220,8 @@ services are</p>
             <tbody>
 
                 <?php
-                $db = new mysqli('localhost', 'root', '', 'lab');
+                $db = new mysqli('sofe2800.cwohowoxlk9c.us-east-1.rds.amazonaws.com',
+                                                'admin', 'sofe2800project', 'lab');
                 if($db->connect_errno > 0){
                     echo "ERROR";
                     die('Unable to connect to database [' . $db->connect_error . ']');
