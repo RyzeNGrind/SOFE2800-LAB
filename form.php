@@ -1,5 +1,6 @@
 <?php
-$db = new mysqli('localhost', 'root', '', 'lab');
+$db = new mysqli('sofe2800.cwohowoxlk9c.us-east-1.rds.amazonaws.com',
+                                'admin', 'sofe2800project', 'lab');
 
 // TODO You must process the POST data from the form and then set the variables
 // below to be inserted in the database
